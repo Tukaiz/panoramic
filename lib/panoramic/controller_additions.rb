@@ -3,15 +3,15 @@ module Panoramic
   module ControllerAdditions
     module ClassMethods
 
-      def register_resolver_details
-        panoramic_resource_class.add_before_filter(self, :register_resolver_details)
+      def register_resolver_details(*args)
+        panoramic_resource_class.add_before_filter(self, :register_resolver_details, *args)
       end
 
       def panoramic_resource_class
         if ancestors.map(&:to_s).include? "InheritedResources::Actions"
           InheritedResource
         else
-            ControllerResource
+          ControllerResource
         end
       end
 
