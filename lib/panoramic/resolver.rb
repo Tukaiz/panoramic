@@ -5,14 +5,14 @@ module Panoramic
 
     # this method is mandatory to implement a Resolver
     def find_templates(name, prefix, partial, details)
-      return [] if @@resolver_options[:except] && @@resolver_options[:except].include?(prefix)
+      return [] if (@@resolver_options[:except] && @@resolver_options[:except].include?(prefix)) || (@@resolver_options[:only] && @@resolver_options[:only].include?(prefix))
 
       conditions = {
         :path    => build_path(name, prefix),
         :locale  => normalize_array(details[:locale]).first,
         :format  => normalize_array(details[:formats]).first,
         :handler => normalize_array(details[:handlers]),
-        :site_id =>  (details[:site] ? normalize_array(details[:site]).first : nil),
+        :site_id =>  (@@resolver_options[:current_site] ? @@resolver_options[:current_site].id : nil),
         :partial => partial || false
       }
 
