@@ -5,7 +5,11 @@ module Panoramic
 
     # this method is mandatory to implement a Resolver
     def find_templates(name, prefix, partial, details)
-      return [] if (@@resolver_options[:except] && @@resolver_options[:except].include?(prefix)) || (@@resolver_options[:only] && !@@resolver_options[:only].include?(prefix))
+      if (@@resolver_options[:except] && @@resolver_options[:except].
+          include?(prefix)) || (@@resolver_options[:only] &&
+          !@@resolver_options[:only].include?(prefix))
+        return []
+      end
 
       conditions = {
         :path    => build_path(name, prefix),
@@ -15,7 +19,9 @@ module Panoramic
         :partial => partial || false
       }
 
-      conditions.merge(@@resolver_options[:conditions]) if @@resolver_options[:conditions]
+      if @@resolver_options[:conditions]
+        conditions.merge(@@resolver_options[:conditions])
+      end
 
       @@model.find_model_templates(conditions).map do |record|
         initialize_template(record)
