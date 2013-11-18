@@ -5,7 +5,7 @@ module Panoramic
 
     # this method is mandatory to implement a Resolver
     def find_templates(name, prefix, partial, details)
-      return [] if !details[:db_lookup] || details[:db_lookup].present?  && @@resolver_options[:only] && !@@resolver_options[:only].include?(prefix)
+      return [] if @@resolver_options[:except] && @@resolver_options[:except].include?(prefix)
 
       conditions = {
         :path    => build_path(name, prefix),

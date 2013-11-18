@@ -1,4 +1,3 @@
-require 'pry'
 module Panoramic
   class ControllerResource
     def self.add_before_filter(controller_class, method, *args)
@@ -24,7 +23,7 @@ module Panoramic
 
     def register_resolver_details
       @controller.lookup_context.class.register_detail(:site) { nil }
-      @controller.lookup_context.class.register_detail(:db_lookup) { false }
+      # @controller.lookup_context.class.register_detail(:db_lookup) { false }
     end
   end
 end
