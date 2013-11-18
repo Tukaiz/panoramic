@@ -12,9 +12,11 @@ module Panoramic
         :locale  => normalize_array(details[:locale]).first,
         :format  => normalize_array(details[:formats]).first,
         :handler => normalize_array(details[:handlers]),
-        :site_id =>  (@@resolver_options[:current_site] ? @@resolver_options[:current_site].id : nil),
+        # :site_id =>  (@@resolver_options[:current_site] ? @@resolver_options[:current_site].id : nil),
         :partial => partial || false
       }
+
+      conditions.merge(@@resolver_options[:conditions])
 
       @@model.find_model_templates(conditions).map do |record|
         initialize_template(record)
