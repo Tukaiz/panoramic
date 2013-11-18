@@ -1,7 +1,7 @@
 module Panoramic
   module Orm
     module ActiveRecord
-      def site_templates
+      def store_templates
         class_eval do
           validates :body,    :presence => true
           validates :path,    :presence => true
