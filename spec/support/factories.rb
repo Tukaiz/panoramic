@@ -7,5 +7,6 @@ FactoryGirl.define do
     handler 'erb'
     partial 'false'
     body    "something here in the body of the page: <%= 2 + 2 %>"
+    site_id 1
   end
 end
