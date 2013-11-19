@@ -19,9 +19,7 @@ module Panoramic
         :partial => partial || false
       }
 
-      if @@resolver_options[:conditions]
-        conditions.merge(@@resolver_options[:conditions])
-      end
+      conditions = add_conditions(conditions)
 
       @@model.find_model_templates(conditions).map do |record|
         initialize_template(record)
@@ -36,6 +34,14 @@ module Panoramic
     end
 
     private
+
+    def add_conditions(conditions)
+      if @@resolver_options[:conditions]
+        conditions.merge(@@resolver_options[:conditions])
+      else
+        conditions
+      end
+    end
 
     # Initialize an ActionView::Template object based on the record found.
     def initialize_template(record)
