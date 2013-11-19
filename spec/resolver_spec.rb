@@ -20,6 +20,57 @@ describe Panoramic::Resolver do
       template = FactoryGirl.create(:database_template, :path => 'foo/example')
       resolver.find_templates('example', 'foo', false, details).first.should_not be_nil
     end
+
+    context "when exceptions are declared" do
+      it "does not lookup the associated templates" do
+        resolver = Panoramic::Resolver.using(DatabaseTemplate, :except => 'foo')
+        details = { :formats => [:html], :locale => [:en], :handlers => [:erb] }
+
+
+        template = FactoryGirl.create(:database_template, :path => 'foo/example')
+        resolver.find_templates('example', 'foo', false, details).
+          first.should be_nil
+
+        template = FactoryGirl.create(:database_template, :path => 'bar/example')
+        resolver.find_templates('example', 'bar', false, details).
+          first.should_not be_nil
+
+      end
+    end
+
+    context "when conditions are specified" do
+      context "given a template matches the conditions" do
+        it "finds the template" do
+          resolver = Panoramic::Resolver.using(
+            DatabaseTemplate, :conditions => {site_id: 9999})
+
+          details = { :formats => [:html],
+            :locale => [:en], :handlers => [:erb] }
+
+          template = FactoryGirl.create(
+            :database_template, :path => 'foo/example', :site_id => 9999)
+
+          resolver.find_templates('example', 'foo', false, details).
+            first.should_not be_nil
+        end
+      end
+
+      context "given no template matches the conditions" do
+        it "does not find a template" do
+          resolver = Panoramic::Resolver.using(
+            DatabaseTemplate, :conditions => {site_id: 9998})
+
+          details = { :formats => [:html],
+            :locale => [:en], :handlers => [:erb] }
+
+          template = FactoryGirl.create(
+            :database_template, :path => 'foo/example', :site_id => 2)
+
+          resolver.find_templates('example', 'foo', false, details).
+            first.should be_nil
+        end
+      end
+    end
   end
 end
 
