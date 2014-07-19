@@ -51,7 +51,7 @@ module Panoramic
 
       details = {
         :format => Mime[record.format],
-        :updated_at => record.updated_at,
+        :updated_at => Time.now,
         :virtual_path => virtual_path(record.path, record.partial)
       }
 
