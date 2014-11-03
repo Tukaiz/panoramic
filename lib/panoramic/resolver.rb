@@ -59,8 +59,8 @@ module Panoramic
     end
 
     # Build path with eventual prefix
-    def build_path(name, prefix)
-      prefix.present? ? "#{prefix}/#{name}" : name
+    def build_path(name, prefix=nil)
+      [prefix, @@resolver_options[:conditions][:site_id], name].compact.join('/')
     end
 
     # Normalize array by converting all symbols to strings.
